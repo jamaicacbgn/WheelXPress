@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ImageBackground,
-  Image,
-  Alert
-} from "react-native";
+import {View,Text,TextInput, TouchableOpacity, ImageBackground, Image,Alert} from "react-native";
 import styles from "../../styles/styles";
 
 const SignupScreen = ({ navigation }) => {
