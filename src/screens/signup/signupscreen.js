@@ -14,6 +14,12 @@ const SignupScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setconfirmPassword] = useState("");
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleSignup = () => {
     if (!username) {
@@ -22,6 +28,10 @@ const SignupScreen = ({ navigation }) => {
     }
     if (!email) {
       Alert.alert("Error", "Email is required!");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      Alert.alert("Error", "Please enter a valid email!");
       return;
     }
     if (!password) {
@@ -50,6 +60,7 @@ const SignupScreen = ({ navigation }) => {
         <TextInput style={styles.input} placeholder="Username" value={username} onChangeText={setUsername} />
         <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} />
         <TextInput style={styles.input} placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
+        <TextInput style={styles.input} placeholder="Confirm Password" secureTextEntry value={confirmPassword} onChangeText={setconfirmPassword} />
         <TouchableOpacity style={styles.button} onPress={handleSignup}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
