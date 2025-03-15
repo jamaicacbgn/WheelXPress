@@ -15,6 +15,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
+    // apply appropriate error handling
     if (!username) {
       Alert.alert("Error", "Username is required!");
       return;
@@ -40,6 +41,7 @@ const LoginScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+          {/* mas maganda if yung sign up lang yung pinaka clickable */}
           <Text style={styles.link}>Don't have an account? Sign up</Text>
         </TouchableOpacity>
       </View>

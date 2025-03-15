@@ -14,6 +14,7 @@ const SignupScreen = ({ navigation }) => {
   };
 
   const handleSignup = () => {
+    // apply error handling 
     if (!username) {
       Alert.alert("Error", "Username is required!");
       return;
@@ -57,6 +58,7 @@ const SignupScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          {/* mas maganda if yung pinaka login lang yung clickable */}
           <Text style={styles.link}>Already have an account? Login</Text>
         </TouchableOpacity>
       </View>
