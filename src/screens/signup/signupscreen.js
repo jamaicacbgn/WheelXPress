@@ -5,9 +5,11 @@ import {
   TextInput,
   TouchableOpacity,
   ImageBackground,
-  Image
+  Image,
+  Alert
 } from "react-native";
 import styles from "../../styles/styles";
+
 
 const SignupScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -15,97 +17,141 @@ const SignupScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+
   const [usernameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
+
   const [formSubmitted, setFormSubmitted] = useState(false);
 
 
-  const isValidEmail = (text) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
-  const isValidUsername = (text) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/.test(text);
+  const isValidEmail = (text) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const [localPart] = text.split("@");
+    return emailRegex.test(text) && localPart.length >= 6 && localPart.length <= 30;
+  };
+ 
+  const isValidUsername = (text) => /^[A-Za-z\d]{4,20}$/.test(text);
+  const isValidPassword = (text) =>
+    text.length >= 8 &&
+    /[A-Z]/.test(text) &&
+    /[a-z]/.test(text) &&
+    /\d/.test(text) &&
+    /[@$!%*?&]/.test(text);
+
 
   const handleUsernameChange = (text) => {
     setUsername(text);
     if (formSubmitted) {
-      setUsernameError(isValidUsername(text) ? "" : "Must contain uppercase, lowercase, number, and special character.");
+      setUsernameError(
+        !text ? "Username is required." :
+        isValidUsername(text) ? "" :
+        "Username must be 4-20 characters long and contain only letters and numbers."
+      );
     }
   };
+
 
   const handleEmailChange = (text) => {
     setEmail(text);
     if (formSubmitted) {
-      setEmailError(isValidEmail(text) ? "" : "Enter a valid email address.");
+      setEmailError(
+        !text ? "Email is required." :
+        isValidEmail(text) ? "" :
+        "Email username must be 6-30 characters and in a valid format."
+      );
     }
   };
+
 
   const handlePasswordChange = (text) => {
     setPassword(text);
     if (formSubmitted) {
-      if (text.length < 6) {
-        setPasswordError("Must be at least 6 characters.");
-      } else {
-        setPasswordError("");
+      const passwordValid = isValidPassword(text);
+      setPasswordError(
+        !text ? "Password is required." :
+        passwordValid ? "" :
+        "Password must have at least 8 characters, an uppercase, lowercase, number, and special character."
+      );
+
+
+      if (confirmPassword) {
+        setConfirmPasswordError(
+          text !== confirmPassword ? "Passwords do not match." : ""
+        );
       }
     }
   };
 
+
   const handleConfirmPasswordChange = (text) => {
     setConfirmPassword(text);
     if (formSubmitted) {
-      if (password.length < 6) {
-        setConfirmPasswordError("");
-      } else {
-        setConfirmPasswordError(text === password ? "" : "Passwords do not match.");
-      }
+      setConfirmPasswordError(
+        !text ? "Confirm password is required." :
+        text !== password ? "Passwords do not match." :
+        ""
+      );
     }
   };
+
 
   const handleSignup = () => {
     setFormSubmitted(true);
     let isValid = true;
 
+
     if (!username) {
       setUsernameError("Username is required.");
       isValid = false;
     } else if (!isValidUsername(username)) {
-      setUsernameError("Must contain uppercase, lowercase, number, and special character.");
+      setUsernameError("Username must be 4-20 characters long and contain only letters and numbers.");
       isValid = false;
+    } else {
+      setUsernameError("");
     }
+
 
     if (!email) {
       setEmailError("Email is required.");
       isValid = false;
     } else if (!isValidEmail(email)) {
-      setEmailError("Enter a valid email address.");
+      setEmailError("Email username must be 6-30 characters long and in a valid format.");
       isValid = false;
+    } else {
+      setEmailError("");
     }
+
 
     if (!password) {
       setPasswordError("Password is required.");
       isValid = false;
-    } else if (password.length < 6) {
-      setPasswordError("Must be at least 6 characters.");
+    } else if (!isValidPassword(password)) {
+      setPasswordError("Password must have at least 8 characters, an uppercase, lowercase, number, and special character.");
       isValid = false;
     } else {
       setPasswordError("");
     }
 
+
     if (!confirmPassword) {
-      setConfirmPasswordError("Confirm Password is required.");
+      setConfirmPasswordError("Confirm password is required.");
       isValid = false;
-    } else if (password.length >= 6 && confirmPassword !== password) {
+    } else if (confirmPassword !== password) {
       setConfirmPasswordError("Passwords do not match.");
       isValid = false;
     } else {
       setConfirmPasswordError("");
     }
 
+
     if (isValid) {
-      navigation.navigate("LoginScreen");
+     Alert.alert("Success", "Successfully registered!", [{ text: "OK", onPress: () => navigation.navigate("LoginScreen") }]);
     }
   };
+
 
   return (
     <ImageBackground source={require("../../assets/bg.png")} style={styles.background}>
@@ -114,46 +160,27 @@ const SignupScreen = ({ navigation }) => {
           <Image source={require("../../assets/logo.jpg")} style={styles.logo} />
           <Text style={styles.title}>Create your account</Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Username"
-            value={username}
-            onChangeText={handleUsernameChange}
-          />
+
+          <TextInput style={styles.input} placeholder="Username" value={username} onChangeText={handleUsernameChange} />
           {usernameError ? <Text style={styles.errorText}>{usernameError}</Text> : null}
 
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={handleEmailChange}
-            keyboardType="email-address"
-          />
+
+          <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={handleEmailChange} keyboardType="email-address" />
           {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
 
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry
-            value={password}
-            onChangeText={handlePasswordChange}
-          />
+
+          <TextInput style={styles.input} placeholder="Password" secureTextEntry value={password} onChangeText={handlePasswordChange} />
           {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
 
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm Password"
-            secureTextEntry
-            value={confirmPassword}
-            onChangeText={handleConfirmPasswordChange}
-          />
-          {formSubmitted && confirmPasswordError ? <Text style={styles.errorText}>{confirmPasswordError}</Text> : null}
+
+          <TextInput style={styles.input} placeholder="Confirm Password" secureTextEntry value={confirmPassword} onChangeText={handleConfirmPasswordChange} />
+          {confirmPasswordError ? <Text style={styles.errorText}>{confirmPasswordError}</Text> : null}
+
 
           <TouchableOpacity style={styles.button} onPress={handleSignup}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
-
-          <Text style={styles.link}> Already have an account?
+           <Text style={styles.link}> Already have an account?
         <Text onPress={() => navigation.navigate("LoginScreen")}> Login </Text>
        </Text>
         </View>
@@ -162,5 +189,5 @@ const SignupScreen = ({ navigation }) => {
   );
 };
 
-export default SignupScreen;
 
+export default SignupScreen;
