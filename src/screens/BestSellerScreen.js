@@ -1,8 +1,6 @@
-// BestSellerScreen.js
 import React from "react";
 import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import styles from "../styles/styles";
 
 const BestSellerScreen = ({ route, navigation }) => {
   const { bestSellers } = route.params;
@@ -37,7 +35,6 @@ const BestSellerScreen = ({ route, navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#F5F5F5", padding: 20 }}>
-      {/* Top Header */}
       <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-left" size={24} />
@@ -47,7 +44,7 @@ const BestSellerScreen = ({ route, navigation }) => {
         </Text>
       </View>
 
-      {/* Grid Layout for Best Sellers */}
+
       <FlatList
         data={bestSellers}
         keyExtractor={(item) => item.id}
@@ -65,14 +62,14 @@ const BestSellerScreen = ({ route, navigation }) => {
               position: "relative",
             }}
           >
-            {/* Heart Icon (favorite) */}
+
             <TouchableOpacity
               style={{ position: "absolute", top: 5, right: 5 }}
               onPress={() => markFavorite(item)}
             >
               <Icon name="heart-o" size={22} color="red" />
             </TouchableOpacity>
-            {/* Render the first image from the images array */}
+
             <Image
               source={item.images[0]}
               style={{ width: "100%", height: 100, resizeMode: "contain" }}
@@ -81,7 +78,7 @@ const BestSellerScreen = ({ route, navigation }) => {
               {item.name}
             </Text>
             {renderPrice(item)}
-            {/* Shopping Bag Icon (add to cart) */}
+
             <TouchableOpacity
               style={{ position: "absolute", bottom: 5, right: 5 }}
               onPress={() => addToCart(item)}

@@ -20,13 +20,13 @@ const LoginScreen = ({ navigation }) => {
 
   const handleUsernameChange = (text) => {
     setUsername(text);
-    if (text) setUsernameError(""); // Clear error when typing
+    if (text) setUsernameError("");
   };
 
 
   const handlePasswordChange = (text) => {
     setPassword(text);
-    if (text) setPasswordError(""); // Clear error when typing
+    if (text) setPasswordError(""); 
   };
 
 

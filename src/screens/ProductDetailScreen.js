@@ -13,15 +13,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "../styles/styles";
 
 const ProductDetailScreen = ({ route, navigation }) => {
-  // Provide defaults so setCartItems is defined.
   const { product, cartItems = [], setCartItems = () => {} } = route.params;
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  // Use -1 to indicate no size is selected initially.
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(-1);
-  // New state for quantity; default is 1.
   const [quantity, setQuantity] = useState(1);
-
-  // Automatically pre-select size if product.chosenSize exists.
   useEffect(() => {
     if (product.chosenSize && product.sizes && product.sizes.length > 0) {
       const index = product.sizes.findIndex(
@@ -39,19 +34,16 @@ const ProductDetailScreen = ({ route, navigation }) => {
     return sizeObj ? sizeObj.price : 0;
   };
 
-  // Increase quantity state.
   const incrementQuantity = () => {
     setQuantity(prev => prev + 1);
   };
 
-  // Decrease quantity state, but never below 1.
   const decrementQuantity = () => {
     setQuantity(prev => (prev > 1 ? prev - 1 : 1));
   };
 
   const handleAddToCart = async () => {
     if (!product) return;
-    // Validate that a size is selected for products with sizes.
     if (product.sizes && product.sizes.length > 0 && selectedSizeIndex === -1) {
       Alert.alert("Select Size", "Please select a size before adding to cart.");
       return;
@@ -61,7 +53,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
         ? product.sizes[selectedSizeIndex]
         : null;
 
-    // Build a new cart item using the current selection and quantity.
     const productClone = { ...product };
     if (productClone.chosenSize) {
       delete productClone.chosenSize;
@@ -69,13 +60,12 @@ const ProductDetailScreen = ({ route, navigation }) => {
     const newCartItem = {
       ...productClone,
       chosenSize: sizeData,
-      quantity, // use current quantity
+      quantity,
     };
 
     try {
       const storedCart = await AsyncStorage.getItem("cartItems");
       let currentCart = storedCart ? JSON.parse(storedCart) : cartItems;
-      // Check if an item with the same product id and chosenSize exists.
       const existingIndex = currentCart.findIndex(
         (item) =>
           item.id === product.id &&
@@ -85,7 +75,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
       );
       let updatedCart;
       if (existingIndex !== -1) {
-        // Increase quantity for the existing item.
         currentCart[existingIndex].quantity += quantity;
         updatedCart = [...currentCart];
       } else {
@@ -113,7 +102,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
     if (productClone.chosenSize) {
       delete productClone.chosenSize;
     }
-    // Use the selected quantity in the cart item.
     const cartItem = { ...productClone, chosenSize: sizeData, quantity };
     navigation.navigate("CheckoutScreen", { cartItems: [cartItem] });
   };
@@ -134,8 +122,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
       />
     );
   };
-
-  // Dummy similar products fallback.
   const dummySimilarProducts = [
     {
       id: "dummy1",
@@ -240,7 +226,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
 
       <ScrollView>
         <View style={{ paddingHorizontal: 15, marginTop: 15 }}>
-          {/* MAIN IMAGE WRAPPER */}
           <View style={{ position: "relative", width: "100%", height: 300 }}>
             {product.images && product.images.length > 0 && (
               <Image
@@ -291,7 +276,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             )}
           </View>
 
-          {/* NAME AND PRICE */}
           <View
             style={{
               flexDirection: "row",
@@ -303,8 +287,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             <Text style={styles.detailProductName}>{product.name}</Text>
             <Text style={styles.detailProductPrice}>₱{getCurrentPrice()}</Text>
           </View>
-
-          {/* SIZES */}
           {product.sizes && product.sizes.length > 0 && (
             <View style={styles.detailSizesContainer}>
               <Text style={styles.detailSizesTitle}>Sizes</Text>
@@ -337,7 +319,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             </View>
           )}
 
-          {/* QUANTITY SELECTOR */}
           <View
             style={{
               flexDirection: "row",
@@ -373,7 +354,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
 
-          {/* PRODUCT DESCRIPTION */}
           <View style={styles.detailDescriptionContainer}>
             <Text style={styles.detailDescriptionTitle}>
               Product Description
@@ -382,8 +362,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
               {product.description}
             </Text>
           </View>
-
-          {/* BUTTONS */}
           <View style={styles.detailButtonRow}>
             <TouchableOpacity
               style={[styles.detailActionButton, { marginRight: 10 }]}
@@ -401,7 +379,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
 
-          {/* CUSTOMER REVIEWS */}
           <View style={{ marginTop: 20 }}>
             <View
               style={{
@@ -427,8 +404,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             </View>
             <View style={{ marginTop: 10 }}>{renderRatingBars()}</View>
           </View>
-
-          {/* SIMILAR PRODUCTS */}
           {renderSimilarProducts()}
         </View>
       </ScrollView>

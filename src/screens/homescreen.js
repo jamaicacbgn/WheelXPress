@@ -11,30 +11,30 @@ import {
   Modal,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import styles from "../styles/styles"; // Your unified styles file
+import styles from "../styles/styles"; 
 
 const { width } = Dimensions.get("window");
 const bannerHeight = 280;
 
 const HomeScreen = ({ navigation }) => {
-  // State to control auto-scrolling banner
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const bannerRef = useRef(null);
 
-  // States for the side menu
+
   const [menuVisible, setMenuVisible] = useState(false);
   const [orderDropdown, setOrderDropdown] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
 
-  // States for filtering modal
+
   const [filterVisible, setFilterVisible] = useState(false);
   const [filterName, setFilterName] = useState("");
   const [filterPrice, setFilterPrice] = useState("");
 
-  // Dummy cart items (in a real app, this may come from global state)
+
   const [cartItems, setCartItems] = useState([]);
 
-  // Banner images
+
   const banners = [
     require("../assets/h1.jpg"),
     require("../assets/h2.jpg"),
@@ -43,11 +43,11 @@ const HomeScreen = ({ navigation }) => {
     require("../assets/h5.jpg"),
   ];
 
-  // Best Sellers (8 products)
+
   const bestSellers = [
     {
       id: "1",
-      brand: "Pirelli", // Added brand property
+      brand: "Pirelli", 
       name: "Pirelli Diablo Rosso Sport 14",
       images: [
         require("../assets/diabloproduct1.jpg"),
@@ -63,7 +63,6 @@ const HomeScreen = ({ navigation }) => {
       description:
         "Experience superior grip and performance with the Pirelli Diablo Rosso Sport 14. Designed for sport and daily use, it offers enhanced cornering, superb handling, and extended tread life.",
       similarProducts: [
-        // ...
       ],
     },
     {
@@ -165,7 +164,7 @@ const HomeScreen = ({ navigation }) => {
     },
   ];
 
-  // Products for your Products section
+
   const productsSection = [
     {
       id: "1",
@@ -193,7 +192,6 @@ const HomeScreen = ({ navigation }) => {
     },
   ];
 
-  // Compute filtered products for Products section
   const filteredProducts = productsSection.filter((item) => {
     const nameMatch =
       filterName.trim() === "" ||
@@ -203,7 +201,7 @@ const HomeScreen = ({ navigation }) => {
     return nameMatch && priceMatch;
   });
 
-  // Auto-scroll banner every 8 seconds
+
   useEffect(() => {
     const interval = setInterval(() => {
       const nextIndex = (currentIndex + 1) % banners.length;
@@ -216,7 +214,7 @@ const HomeScreen = ({ navigation }) => {
     return () => clearInterval(interval);
   }, [currentIndex]);
 
-  // For best sellers, navigate to ProductDetailScreen
+
   const handleProductPress = (item) => {
     navigation.navigate("ProductDetailScreen", {
       product: item,
@@ -227,7 +225,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#F5F5F5" }}>
-      {/* Header */}
+
       <View style={{ flexDirection: "row", alignItems: "center", padding: 10, backgroundColor: "#fff" }}>
         <Icon name="bars" size={24} style={{ marginRight: 10 }} onPress={() => setMenuVisible(!menuVisible)} />
         <View style={{ flex: 1, position: "relative" }}>
@@ -251,7 +249,7 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Banner */}
+
         <View style={{ height: bannerHeight, overflow: "hidden" }}>
           <FlatList
             ref={bannerRef}
@@ -267,7 +265,7 @@ const HomeScreen = ({ navigation }) => {
           />
         </View>
 
-        {/* Brand Buttons */}
+
         <View style={{ marginVertical: 15 }}>
           <FlatList
             data={["Eurogrip", "Pirelli", "Shinko", "Motoz", "Michelin", "Metzeler"]}
@@ -296,7 +294,6 @@ const HomeScreen = ({ navigation }) => {
           />
         </View>
 
-        {/* Best Sellers (8 products) */}
         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 10, marginTop: 10 }}>
   <Text style={{ fontSize: 18, fontWeight: "bold" }}>BEST SELLERS</Text>
   <TouchableOpacity onPress={() => navigation.navigate("BestSellerScreen", { bestSellers })}>
@@ -321,7 +318,7 @@ const HomeScreen = ({ navigation }) => {
           ))}
         </ScrollView>
 
-        {/* Products Section */}
+
         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 10, marginTop: 10 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>PRODUCTS</Text>
           <Icon name="chevron-right" size={22} />
@@ -343,7 +340,7 @@ const HomeScreen = ({ navigation }) => {
                 position: "relative",
               }}
             >
-              {/* Quick Add to Cart Icon */}
+
               <TouchableOpacity style={{ position: "absolute", top: 10, right: 5 }} onPress={() => addToCart(item)}>
                 <Icon name="heart-o" size={22} color="red" />
               </TouchableOpacity>
@@ -358,7 +355,7 @@ const HomeScreen = ({ navigation }) => {
         </ScrollView>
       </ScrollView>
 
-      {/* Footer */}
+
       <View style={styles.footer}>
         <View style={styles.footerSocial}>
           <TouchableOpacity>
@@ -403,7 +400,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.footerText}>© 2025 TireXpress. All Rights Reserved.</Text>
       </View>
 
-      {/* SIDE MENU OVERLAY */}
+
       {menuVisible && (
         <View style={styles.sideMenuOverlay}>
           <View style={styles.sideMenu}>
@@ -457,7 +454,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
       )}
 
-      {/* FILTER MODAL */}
+
       <Modal transparent visible={filterVisible} animationType="slide">
         <View style={styles.filterModalOverlay}>
           <View style={styles.filterModalContainer}>

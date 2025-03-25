@@ -1,4 +1,3 @@
-// BrandScreen.js
 import React, { useState, useEffect } from "react";
 import { 
   View, 
@@ -11,13 +10,10 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import styles from "../styles/styles"; // adjust or add styles as needed
+import styles from "../styles/styles"; 
 
 const BrandScreen = ({ route, navigation }) => {
-  // Retrieve the brand name from route parameters
   const { brand } = route.params;
-
-  // Sample product data with a brand property
   const allProducts = [
     {
       id: "1",
@@ -103,19 +99,11 @@ const BrandScreen = ({ route, navigation }) => {
       brand: "Metzeler",
       image: require("../assets/011vergeproduct1.jpg"),
     },
-    // Add more products as needed
   ];
-
-  // Filter products for the selected brand (case-insensitive)
   const brandProducts = allProducts.filter(
     (item) => item.brand.toLowerCase() === brand.toLowerCase()
   );
-
-  // Local state to track favorite status for each product
-  // Structure: { productId: true/false }
   const [favorites, setFavorites] = useState({});
-
-  // Load favorites for this brand from AsyncStorage on mount
   useEffect(() => {
     const loadFavorites = async () => {
       try {
@@ -129,8 +117,6 @@ const BrandScreen = ({ route, navigation }) => {
     };
     loadFavorites();
   }, [brand]);
-
-  // Save favorites for this brand whenever they change
   useEffect(() => {
     const saveFavorites = async () => {
       try {
@@ -141,19 +127,13 @@ const BrandScreen = ({ route, navigation }) => {
     };
     saveFavorites();
   }, [favorites, brand]);
-
-  // State for custom feedback modal
   const [feedbackVisible, setFeedbackVisible] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
-
-  // Show feedback modal for 1.5 seconds
   const showFeedback = (message) => {
     setFeedbackMessage(message);
     setFeedbackVisible(true);
     setTimeout(() => setFeedbackVisible(false), 1500);
   };
-
-  // Toggle favorite status for a given product id
   const toggleFavorite = (id, productName) => {
     setFavorites((prev) => {
       const newStatus = !prev[id];
@@ -165,13 +145,10 @@ const BrandScreen = ({ route, navigation }) => {
       return { ...prev, [id]: newStatus };
     });
   };
-
-  // Dummy function for adding to cart
   const addToCart = (product) => {
     showFeedback(`Added ${product.name} to cart`);
   };
 
-  // Header for FlatList
   const ListHeader = () => (
     <View style={{ marginBottom: 15 }}>
       <Text style={{ fontSize: 30, fontWeight: "bold" }}>{brand}</Text>
@@ -180,7 +157,6 @@ const BrandScreen = ({ route, navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#F5F5F5", padding: 20 }}>
-      {/* Top Header Bar */}
       <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-left" size={24} />
@@ -189,8 +165,6 @@ const BrandScreen = ({ route, navigation }) => {
           {brand}
         </Text>
       </View>
-
-      {/* Feedback Modal */}
       <Modal transparent visible={feedbackVisible} animationType="fade">
         <View
           style={{
@@ -205,8 +179,6 @@ const BrandScreen = ({ route, navigation }) => {
           </View>
         </View>
       </Modal>
-
-      {/* Product Grid */}
       <FlatList
         data={brandProducts}
         keyExtractor={(item) => item.id}
@@ -224,7 +196,6 @@ const BrandScreen = ({ route, navigation }) => {
               position: "relative",
             }}
           >
-            {/* Heart Icon */}
             <TouchableOpacity
               style={{ position: "absolute", top: 5, right: 5 }}
               onPress={() => toggleFavorite(item.id, item.name)}
@@ -236,19 +207,18 @@ const BrandScreen = ({ route, navigation }) => {
               )}
             </TouchableOpacity>
 
-            {/* Product Image */}
+
             <Image
               source={item.image}
               style={{ width: "100%", height: 100, resizeMode: "contain" }}
             />
 
-            {/* Name & Price */}
+        
             <Text style={{ fontWeight: "bold", textAlign: "center", marginTop: 5 }}>
               {item.name}
             </Text>
             <Text style={{ color: "#888", textAlign: "center" }}>{item.price}</Text>
 
-            {/* Shopping Bag Icon */}
             <TouchableOpacity
               style={{ position: "absolute", bottom: 5, right: 5 }}
               onPress={() => addToCart(item)}

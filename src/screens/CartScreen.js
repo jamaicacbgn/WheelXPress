@@ -10,11 +10,11 @@ import {
   Modal,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-// Ensure you have installed this package:
+
 import { Picker } from "@react-native-picker/picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
-import styles from "../styles/styles"; // Your unified styles file
+import styles from "../styles/styles";
 
 const CartScreen = ({ route, navigation }) => {
   const { cartItems = [], setCartItems } = route.params;
@@ -24,19 +24,13 @@ const CartScreen = ({ route, navigation }) => {
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectedForDeletion, setSelectedForDeletion] = useState({});
   const [selectedForCheckout, setSelectedForCheckout] = useState({});
-  // Controls the "expanded" search bar
   const [showSearch, setShowSearch] = useState(false);
-  // Holds the user’s search text
   const [searchQuery, setSearchQuery] = useState("");
-
-  // -- NEW STATES FOR FILTER MODAL --
   const [showFilter, setShowFilter] = useState(false);
   const [filterBrand, setFilterBrand] = useState("");
   const [filterName, setFilterName] = useState("");
   const [filterPriceMin, setFilterPriceMin] = useState("");
   const [filterPriceMax, setFilterPriceMax] = useState("");
-
-  // Load cart from AsyncStorage or fallback to route.params
   const loadCart = async () => {
     try {
       const storedCart = await AsyncStorage.getItem("cartItems");
@@ -57,20 +51,14 @@ const CartScreen = ({ route, navigation }) => {
       console.error("Error loading cart:", error);
     }
   };
-
-  // Load cart on mount or when cartItems changes
   useEffect(() => {
     loadCart();
   }, [cartItems, setCartItems]);
-
-  // Also reload cart when screen refocuses
   useFocusEffect(
     useCallback(() => {
       loadCart();
     }, [])
   );
-
-  // Update parent's cartItems and AsyncStorage whenever cartData changes
   useEffect(() => {
     if (typeof setCartItems === "function") {
       setCartItems(cartData);
@@ -80,8 +68,6 @@ const CartScreen = ({ route, navigation }) => {
     );
     filterCart(searchQuery, cartData);
   }, [cartData, setCartItems, searchQuery]);
-
-  // Filter cart items by name based on the search query
   const filterCart = (query, data = cartData) => {
     if (!query) {
       setFilteredCartData(data);
@@ -94,13 +80,11 @@ const CartScreen = ({ route, navigation }) => {
     }
   };
 
-  // Called whenever the user types in the search bar
   const handleSearch = (query) => {
     setSearchQuery(query);
     filterCart(query);
   };
 
-  // Increase quantity
   const incrementQuantity = (index) => {
     setCartData((prev) => {
       const updated = [...prev];
@@ -109,7 +93,6 @@ const CartScreen = ({ route, navigation }) => {
     });
   };
 
-  // Decrease quantity or prompt removal if quantity is 1
   const decrementQuantity = (index) => {
     if (cartData[index].quantity === 1) {
       Alert.alert(
@@ -140,7 +123,7 @@ const CartScreen = ({ route, navigation }) => {
     }
   };
 
-  // Toggle delete mode; clear selections if exiting
+
   const toggleDeleteMode = () => {
     if (deleteMode) {
       setSelectedForDeletion({});
@@ -148,7 +131,7 @@ const CartScreen = ({ route, navigation }) => {
     setDeleteMode(!deleteMode);
   };
 
-  // Toggle item selection for deletion
+
   const toggleItemDeletionSelection = (index) => {
     setSelectedForDeletion((prev) => {
       const newSelections = { ...prev };
@@ -161,7 +144,7 @@ const CartScreen = ({ route, navigation }) => {
     });
   };
 
-  // Toggle item selection for checkout
+
   const toggleCheckoutSelection = (index) => {
     setSelectedForCheckout((prev) => {
       const newSelections = { ...prev };
@@ -174,9 +157,8 @@ const CartScreen = ({ route, navigation }) => {
     });
   };
 
-  // Delete selected items
+ 
 const deleteSelectedItems = () => {
-  // Check if no item is selected for deletion
   if (Object.keys(selectedForDeletion).length === 0) {
     Alert.alert("Selection Required", "Please select at least one item to remove.");
     return;
@@ -202,10 +184,8 @@ const deleteSelectedItems = () => {
 };
 
 
-  // Calculate total items
   const totalItems = cartData.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Calculate total price for selected items (for checkout)
   const totalPrice = cartData
     .filter((_, i) => selectedForCheckout[i])
     .reduce((sum, item) => {
@@ -213,13 +193,12 @@ const deleteSelectedItems = () => {
       return sum + price * item.quantity;
     }, 0);
 
-  // Check if all items are selected for deletion or checkout
+
   const allDeleteSelected =
     cartData.length > 0 && cartData.every((_, i) => selectedForDeletion[i]);
   const allCheckoutSelected =
     cartData.length > 0 && cartData.every((_, i) => selectedForCheckout[i]);
 
-  // Toggle "Select All" in delete mode
   const toggleSelectAllDeletion = () => {
     if (allDeleteSelected) {
       setSelectedForDeletion({});
@@ -232,7 +211,6 @@ const deleteSelectedItems = () => {
     }
   };
 
-  // Toggle "Select All" in checkout mode
   const toggleSelectAllCheckout = () => {
     if (allCheckoutSelected) {
       setSelectedForCheckout({});
@@ -245,7 +223,6 @@ const deleteSelectedItems = () => {
     }
   };
 
-  // Navigate to product detail
   const handleViewDetails = (item) => {
     navigation.navigate("ProductDetailScreen", {
       product: item,
@@ -254,7 +231,6 @@ const deleteSelectedItems = () => {
     });
   };
 
-  // Proceed to checkout with selected items
   const proceedToCheckout = () => {
     const selectedItems = cartData.filter((_, i) => selectedForCheckout[i]);
     if (selectedItems.length === 0) {
@@ -264,33 +240,25 @@ const deleteSelectedItems = () => {
     }
   };
 
-  // ================================
-  // APPLY FILTER LOGIC
-  // ================================
   const applyFilter = () => {
     let newFiltered = cartData;
   
-    // Filter by brand: use the brand property if available; otherwise, check item name.
     if (filterBrand.trim() !== "") {
       newFiltered = newFiltered.filter((item) => {
-        // If item has a brand property, use it for comparison.
         if (item.brand) {
           return item.brand.toLowerCase() === filterBrand.toLowerCase();
         } else {
-          // Fallback: check if the item name includes the brand (e.g., "michelin")
           return item.name.toLowerCase().includes(filterBrand.toLowerCase());
         }
       });
     }
   
-    // Filter by name
     if (filterName.trim() !== "") {
       newFiltered = newFiltered.filter((item) =>
         item.name.toLowerCase().includes(filterName.toLowerCase())
       );
     }
   
-    // Filter by price range
     const minPrice = parseFloat(filterPriceMin) || 0;
     const maxPrice = parseFloat(filterPriceMax) || Infinity;
     newFiltered = newFiltered.filter((item) => {
@@ -302,23 +270,18 @@ const deleteSelectedItems = () => {
     setShowFilter(false);
   };
 
-  // ================================
-  // CLEAR FILTERS
-  // ================================
   const clearFilters = () => {
     setFilterBrand("");
     setFilterName("");
     setFilterPriceMin("");
     setFilterPriceMax("");
-    setFilteredCartData(cartData); // reset to full cart
+    setFilteredCartData(cartData);
     setShowFilter(false);
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: "#F5F5F5" }}>
-      {/* TOP HEADER ROW */}
       {!showSearch ? (
-        // If NOT searching, show: Cart(X), Filter icon, Search icon, Trash icon
         <View style={styles.cartHeader}>
           <Text style={styles.cartHeaderTitle}>Cart ({totalItems})</Text>
           <View style={{ flex: 1 }} />
@@ -337,7 +300,6 @@ const deleteSelectedItems = () => {
           </TouchableOpacity>
         </View>
       ) : (
-        // If searching, show: Cart(X), expanded TextInput, Filter icon, Cancel
         <View style={styles.cartHeader}>
           <Text style={styles.cartHeaderTitle}>Cart ({totalItems})</Text>
           <View
@@ -374,8 +336,6 @@ const deleteSelectedItems = () => {
           </TouchableOpacity>
         </View>
       )}
-
-      {/* "ALL" SELECTION ROW - Checkbox for selecting all items */}
       {deleteMode ? (
         <View
           style={{
@@ -415,8 +375,6 @@ const deleteSelectedItems = () => {
           <Text style={{ marginLeft: 10, fontSize: 16 }}>All</Text>
         </View>
       )}
-
-      {/* CART ITEMS */}
       <ScrollView style={{ paddingHorizontal: 20, marginTop: 10 }}>
         {filteredCartData.length > 0 ? (
           filteredCartData.map((item, index) => {
@@ -480,8 +438,6 @@ const deleteSelectedItems = () => {
           <Text style={styles.emptyCartText}>Your cart is empty.</Text>
         )}
       </ScrollView>
-
-      {/* FOOTER: Total price displayed on left side of the checkout button */}
       {!deleteMode && (
         <View
           style={{
@@ -533,7 +489,6 @@ const deleteSelectedItems = () => {
         </TouchableOpacity>
       )}
 
-      {/* ===================== FILTER MODAL ===================== */}
       <Modal
         visible={showFilter}
         transparent
@@ -544,7 +499,6 @@ const deleteSelectedItems = () => {
           <View style={styles.filterModalContainer}>
             <Text style={styles.filterModalTitle}>Filter</Text>
 
-            {/* BRAND Filter (Dropdown) */}
             <Text style={{ marginBottom: 5, fontWeight: "600" }}>Brand</Text>
             <View
               style={{
@@ -568,7 +522,6 @@ const deleteSelectedItems = () => {
               </Picker>
             </View>
 
-            {/* NAME Filter */}
             <TextInput
               style={styles.filterInput}
               placeholder="Name"
@@ -576,9 +529,7 @@ const deleteSelectedItems = () => {
               onChangeText={setFilterName}
             />
 
-            {/* PRICE RANGE LABEL */}
             <Text style={{ marginBottom: 5, fontWeight: "600" }}>Price Range</Text>
-            {/* Price Range Inputs */}
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <TextInput
                 style={[styles.filterInput, { flex: 1, marginRight: 5 }]}
@@ -596,7 +547,6 @@ const deleteSelectedItems = () => {
               />
             </View>
 
-            {/* Buttons: Cancel / Apply */}
             <View style={styles.filterModalButtons}>
               <TouchableOpacity
                 style={[styles.filterButton, styles.filterClearButton]}

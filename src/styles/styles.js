@@ -2,7 +2,6 @@ import { StyleSheet, Dimensions } from "react-native";
 const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
-  // General Styles
   background: {
     flex: 1,
     resizeMode: "cover",
@@ -58,7 +57,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "red",
   },
-  // Header (common)
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -88,7 +86,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  // Brand Buttons
   brandsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -108,7 +105,6 @@ const styles = StyleSheet.create({
   brandText: {
     fontWeight: "600",
   },
-  // Main Image (if used)
   mainImageContainer: {
     marginBottom: 16,
   },
@@ -119,7 +115,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#3b82f6",
   },
-  // Section Container (for products, best sellers, etc.)
   sectionContainer: {
     marginBottom: 16,
   },
@@ -133,7 +128,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  // Best Sellers
   bestSellersContainer: {
     flexDirection: "row",
   },
@@ -143,7 +137,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginRight: 8,
   },
-  // Product Cards (Products section)
   productsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -179,7 +172,6 @@ const styles = StyleSheet.create({
   productPrice: {
     color: "#6b7280",
   },
-  // Footer
   footer: {
     width: "100%",
     backgroundColor: "#222",
@@ -222,7 +214,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#bbb",
   },
-  // Side Menu
   sideMenuOverlay: {
     position: "absolute",
     top: 0,
@@ -266,7 +257,6 @@ const styles = StyleSheet.create({
   sideMenuDropdownItem: {
     paddingVertical: 8,
   },
-  // Filter Modal
   filterModalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -310,7 +300,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  // Notification Modal (if used)
   notificationModalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -360,7 +349,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginRight: 15,
   },
-  // Cart Modal
   cartModalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -419,10 +407,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-
-  // =============================
-  // ProductDetailScreen Styles (Prefixed with 'detail')
-  // =============================
   detailContainer: {
     flex: 1,
     backgroundColor: "#fff",
@@ -461,7 +445,6 @@ const styles = StyleSheet.create({
     color: "#f00",
     marginTop: 5,
   },
-  // Using distinct keys for product detail so as not to conflict with other screen keys
   detailSizesContainer: {
     marginTop: 15,
   },
@@ -508,9 +491,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  // =============================
-  // NEW Cart Screen Styles
-  // =============================
   cartHeader: {
     flexDirection: "row",
     backgroundColor: "#fff",
@@ -526,7 +506,7 @@ const styles = StyleSheet.create({
   },
   cartItemContainer: {
     flexDirection: "row",
-    backgroundColor: "#ffeef2", // Pinkish background
+    backgroundColor: "#ffeef2", 
     borderRadius: 10,
     padding: 15,
     marginBottom: 10,
@@ -583,7 +563,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  // New Styles for Displaying Chosen Size in Cart
   chosenSizeContainer: {
     backgroundColor: "black",
     borderRadius: 10,
@@ -724,10 +703,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  // In styles.js (add these to the bottom or merge into existing code)
 modalContainer: {
   flex: 1,
-  backgroundColor: "rgba(0,0,0,0.5)", // semi-transparent overlay
+  backgroundColor: "rgba(0,0,0,0.5)", 
   justifyContent: "center",
   alignItems: "center",
 },

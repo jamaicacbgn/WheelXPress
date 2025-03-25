@@ -1,11 +1,8 @@
-// MessageScreen.js
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import styles from "../styles/styles"; // add or adjust message styles here
 
 const messageScreen = ({ navigation }) => {
-  // Dummy messages data – replace with your dynamic customer support messages
   const messages = [
     { id: "1", from: "Support", content: "Hi! How can we help you today?" },
     { id: "2", from: "User", content: "I have a concern about my order." },
@@ -28,7 +25,6 @@ const messageScreen = ({ navigation }) => {
           </View>
         ))}
       </ScrollView>
-      {/* Optionally, add a text input for sending new messages */}
       <View style={{ flexDirection: "row", alignItems: "center", marginTop: 15 }}>
         <TextInput
           placeholder="Type your message..."

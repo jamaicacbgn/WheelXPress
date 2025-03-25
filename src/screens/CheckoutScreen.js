@@ -10,33 +10,21 @@ import {
   Modal,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import styles from "../styles/styles"; // Ensure this has the checkout & modal styles
+import styles from "../styles/styles"; 
 
 const CheckoutScreen = ({ route, navigation }) => {
-  // Retrieve cart items passed from previous screen
   const { cartItems = [] } = route.params;
-
-  // Shipping address is a direct TextInput
   const [shippingAddress, setShippingAddress] = useState("");
-  // Payment method uses a modal
   const [paymentMethod, setPaymentMethod] = useState("");
   const [customerNote, setCustomerNote] = useState("");
-
-  // Payment modal visibility
   const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
-
-  // Example shipping fee
   const shippingFee = 600;
-
-  // Calculate total price of cart items
   const totalItemsPrice = cartItems.reduce((sum, item) => {
     const price = item.chosenSize ? item.chosenSize.price : item.price || 0;
     return sum + price * (item.quantity || 1);
   }, 0);
 
   const total = totalItemsPrice + shippingFee;
-
-  // Renders each cart item
   const renderCartItem = ({ item }) => {
     const price = item.chosenSize ? item.chosenSize.price : item.price || 0;
     return (
@@ -71,19 +59,14 @@ const CheckoutScreen = ({ route, navigation }) => {
       </View>
     );
   };
-
-  // Make appointment
   const handleMakeAppointment = () => {
     Alert.alert("Appointment", "Make an appointment function here.");
   };
 
-  // Place order
   const handlePlaceOrder = () => {
     Alert.alert("Order Placed", "Your order has been placed successfully!");
-    // Optionally navigate to an order confirmation or clear cart
   };
 
-  // Payment method selection
   const handleEditPayment = () => {
     setPaymentModalVisible(true);
   };
@@ -91,14 +74,10 @@ const CheckoutScreen = ({ route, navigation }) => {
   const selectPaymentMethod = (method) => {
     setPaymentMethod(method);
     setPaymentModalVisible(false);
-    // Optionally direct them to a payment screen
-    // navigation.navigate("PaymentFlowScreen", { method });
   };
 
-  // Header above the cart items: shipping/payment rows, notes
   const renderListHeader = () => (
     <View>
-      {/* SHIPPING ROW (direct TextInput) */}
       <View style={styles.checkoutRow}>
         <Text style={styles.checkoutRowTitle}>Shipping</Text>
         <TextInput
@@ -110,8 +89,6 @@ const CheckoutScreen = ({ route, navigation }) => {
         />
       </View>
       <View style={styles.checkoutDivider} />
-
-      {/* PAYMENT ROW (opens modal) */}
       <TouchableOpacity style={styles.checkoutRow} onPress={handleEditPayment}>
         <Text style={styles.checkoutRowTitle}>Payment</Text>
         <Text style={[styles.checkoutRowValue, { textAlign: "right" }]}>
@@ -119,8 +96,6 @@ const CheckoutScreen = ({ route, navigation }) => {
         </Text>
       </TouchableOpacity>
       <View style={styles.checkoutDivider} />
-
-      {/* NOTE ROW */}
       <Text style={styles.checkoutNoteTitle}>Order Notes</Text>
       <TextInput
         style={styles.checkoutNoteInput}
@@ -131,8 +106,6 @@ const CheckoutScreen = ({ route, navigation }) => {
       />
     </View>
   );
-
-  // Footer below the cart items: shipping fee, total, and "Make Appointment"
   const renderListFooter = () => (
     <View>
       <View style={styles.checkoutSummaryRow}>
@@ -155,7 +128,6 @@ const CheckoutScreen = ({ route, navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* HEADER */}
       <View style={styles.checkoutHeader}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={24} color="#000" />
@@ -163,8 +135,6 @@ const CheckoutScreen = ({ route, navigation }) => {
         <Text style={styles.checkoutHeaderTitle}>Checkout</Text>
         <View style={{ width: 24 }} />
       </View>
-
-      {/* MAIN LIST: Items plus header/footer */}
       <FlatList
         data={cartItems}
         keyExtractor={(item, index) => index.toString()}
@@ -173,8 +143,6 @@ const CheckoutScreen = ({ route, navigation }) => {
         ListFooterComponent={renderListFooter}
         contentContainerStyle={[styles.checkoutScrollContainer, { paddingBottom: 100 }]}
       />
-
-      {/* PLACE ORDER BUTTON pinned at bottom */}
       <View style={styles.checkoutFooter}>
         <TouchableOpacity
           style={styles.checkoutPlaceOrderButton}
@@ -183,8 +151,6 @@ const CheckoutScreen = ({ route, navigation }) => {
           <Text style={styles.checkoutPlaceOrderButtonText}>Place order</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Payment Modal */}
       <Modal
         visible={isPaymentModalVisible}
         transparent

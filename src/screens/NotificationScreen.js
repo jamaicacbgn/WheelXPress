@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from '../styles/styles'; // Ensure you add the notification styles here
+import styles from '../styles/styles'; 
 
 const NotificationScreen = ({ navigation }) => {
-  // Sample notifications with a product image on the left
   const notifications = [
     {
       id: '1',
