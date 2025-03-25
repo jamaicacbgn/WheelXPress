@@ -703,42 +703,65 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-modalContainer: {
-  flex: 1,
-  backgroundColor: "rgba(0,0,0,0.5)", 
-  justifyContent: "center",
-  alignItems: "center",
-},
-modalContent: {
-  width: "85%",
-  backgroundColor: "#fff",
-  borderRadius: 10,
-  padding: 20,
-},
-modalTitle: {
-  fontSize: 18,
-  fontWeight: "bold",
-  marginBottom: 15,
-},
-modalInput: {
-  borderWidth: 1,
-  borderColor: "#ccc",
-  borderRadius: 8,
-  padding: 10,
-  marginBottom: 15,
-  backgroundColor: "#fff",
-},
-modalCloseButton: {
-  marginTop: 10,
-  fontSize: 16,
-  color: "#007BFF",
-  textAlign: "right",
-},
-modalOption: {
-  fontSize: 16,
-  color: "#007BFF",
-  paddingVertical: 5,
-},
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContent: {
+    width: "100%",
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 15,
+    backgroundColor: "#fff",
+  },
+  modalCloseButton: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#007BFF",
+    textAlign: "right",
+  },
+  modalOption: {
+    fontSize: 16,
+    color: "#333",
+    paddingVertical: 5,
+  },
+  paymentMethodItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    marginBottom: 8,
+    backgroundColor: "#f9f9f9",
+  },
+  paymentMethodIcon: {
+    marginRight: 10,
+  },
+  paymentMethodLabel: {
+    fontSize: 16,
+    color: "#333",
+  },
 });
 
 export default styles;
